@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,32 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Custom agriculture-themed colors
+				soil: {
+					light: '#E5D9B6',
+					DEFAULT: '#A4BE7B',
+					dark: '#5F8D4E',
+					darker: '#285430',
+				},
+				plant: {
+					light: '#D0F5BE',
+					DEFAULT: '#7DCE13',
+					dark: '#5BB318',
+					darker: '#2B7A0B',
+				},
+				weather: {
+					light: '#B4E4FF',
+					DEFAULT: '#95BDFF',
+					dark: '#3E6D9C',
+					darker: '#001253',
+				},
+				community: {
+					light: '#FFF1DC',
+					DEFAULT: '#F8CBA6',
+					dark: '#E5BA73',
+					darker: '#A77979',
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +110,20 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'pulse-grow': {
+					'0%, 100%': {
+						transform: 'scale(1)'
+					},
+					'50%': {
+						transform: 'scale(1.05)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-grow': 'pulse-grow 2s ease-in-out infinite'
 			}
 		}
 	},

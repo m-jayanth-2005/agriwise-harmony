@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ChevronRight, Leaf, CloudRain, Soil, Bug, MessageSquare, BarChart, ArrowUp, ArrowDown } from "lucide-react";
+import { ChevronRight, Leaf, CloudRain, Sprout, Bug, MessageSquare, BarChart, ArrowUp, ArrowDown } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import FeaturedCard from "@/components/dashboard/FeaturedCard";
@@ -46,7 +45,7 @@ const Dashboard = () => {
                 <Card>
                   <CardHeader className="pb-2">
                     <CardTitle className="text-lg flex items-center gap-2">
-                      <Soil className="h-5 w-5" />
+                      <Sprout className="h-5 w-5" />
                       Soil Health Status
                     </CardTitle>
                   </CardHeader>
@@ -156,7 +155,7 @@ const Dashboard = () => {
                   <FeaturedCard
                     title="Soil Analysis"
                     description="Check your soil health and get recommendations"
-                    icon={<Soil className="h-5 w-5 text-soil-dark" />}
+                    icon={<Sprout className="h-5 w-5 text-soil-dark" />}
                     linkTo="/soil-analysis"
                     bgColor="hover:bg-soil-light/30"
                   />
@@ -239,7 +238,7 @@ const Dashboard = () => {
                           action: "Soil Analysis",
                           description: "Performed soil health analysis for Field A",
                           date: "Yesterday at 2:30 PM",
-                          icon: <Soil className="h-5 w-5 text-soil-dark" />
+                          icon: <Sprout className="h-5 w-5 text-soil-dark" />
                         },
                         {
                           action: "Disease Detection",

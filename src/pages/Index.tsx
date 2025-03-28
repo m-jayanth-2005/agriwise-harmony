@@ -1,7 +1,7 @@
 
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, Leaf, CloudRain, Soil, Bug, MessageSquare } from "lucide-react";
+import { ChevronRight, Leaf, CloudRain, Sprout, Bug, MessageSquare } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
@@ -60,7 +60,7 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               <div className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border">
                 <div className="w-12 h-12 bg-soil-light rounded-lg flex items-center justify-center mb-4">
-                  <Soil className="h-6 w-6 text-soil-darker" />
+                  <Sprout className="h-6 w-6 text-soil-darker" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Soil Health Analysis</h3>
                 <p className="text-muted-foreground mb-4">

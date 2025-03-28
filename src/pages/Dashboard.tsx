@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,9 +9,38 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import FeaturedCard from "@/components/dashboard/FeaturedCard";
 import WeatherWidget from "@/components/dashboard/WeatherWidget";
+import { useToast } from "@/hooks/use-toast";
+import { generateGeminiResponse } from "@/services/geminiService";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
+  const [isLoadingPredictions, setIsLoadingPredictions] = useState(false);
+  const [predictions, setPredictions] = useState<string | null>(null);
+  const { toast } = useToast();
+
+  const handleViewPredictions = async () => {
+    setIsLoadingPredictions(true);
+    try {
+      const response = await generateGeminiResponse([{
+        role: "user",
+        content: "Generate a yield prediction for my farm based on current soil health and weather conditions."
+      }]);
+      setPredictions(response);
+      setActiveTab("insights"); // Switch to insights tab to show prediction
+      toast({
+        title: "Predictions Generated",
+        description: "AI-powered yield predictions have been generated successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to generate predictions. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoadingPredictions(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -194,28 +224,43 @@ const Dashboard = () => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="border-l-4 border-soil-dark pl-4 py-2">
-                      <h3 className="font-medium">Soil Nutrient Management</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Your soil's potassium levels are slightly below optimal. Consider applying a potassium-rich fertilizer within the next 7-10 days for better crop development.
-                      </p>
-                    </div>
-                    <div className="border-l-4 border-plant-dark pl-4 py-2">
-                      <h3 className="font-medium">Pest Prevention Alert</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Based on current weather conditions and crop status, there's a moderate risk of aphid infestation in the next 2 weeks. Consider preventative measures.
-                      </p>
-                    </div>
-                    <div className="border-l-4 border-weather-dark pl-4 py-2">
-                      <h3 className="font-medium">Water Management</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Due to forecasted rainfall, you can reduce irrigation by 30% this week, saving approximately 2,000 gallons of water.
-                      </p>
-                    </div>
+                    {predictions ? (
+                      <div className="border-l-4 border-plant-dark pl-4 py-2">
+                        <h3 className="font-medium">Yield Prediction</h3>
+                        <p className="text-sm text-muted-foreground whitespace-pre-line">
+                          {predictions}
+                        </p>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="border-l-4 border-soil-dark pl-4 py-2">
+                          <h3 className="font-medium">Soil Nutrient Management</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Your soil's potassium levels are slightly below optimal. Consider applying a potassium-rich fertilizer within the next 7-10 days for better crop development.
+                          </p>
+                        </div>
+                        <div className="border-l-4 border-plant-dark pl-4 py-2">
+                          <h3 className="font-medium">Pest Prevention Alert</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Based on current weather conditions and crop status, there's a moderate risk of aphid infestation in the next 2 weeks. Consider preventative measures.
+                          </p>
+                        </div>
+                        <div className="border-l-4 border-weather-dark pl-4 py-2">
+                          <h3 className="font-medium">Water Management</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Due to forecasted rainfall, you can reduce irrigation by 30% this week, saving approximately 2,000 gallons of water.
+                          </p>
+                        </div>
+                      </>
+                    )}
                   </CardContent>
                   <CardFooter>
-                    <Button className="w-full bg-soil-dark hover:bg-soil-darker text-white">
-                      Generate New Insights
+                    <Button 
+                      className="w-full bg-soil-dark hover:bg-soil-darker text-white"
+                      onClick={handleViewPredictions}
+                      disabled={isLoadingPredictions}
+                    >
+                      {isLoadingPredictions ? "Generating..." : "Generate New Insights"}
                     </Button>
                   </CardFooter>
                 </Card>

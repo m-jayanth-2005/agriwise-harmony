@@ -10,7 +10,6 @@ import {
   DrawerTrigger 
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MessageSquare, Send, X } from "lucide-react";
 import { generateGeminiResponse, GeminiMessage } from "@/services/geminiService";
@@ -42,8 +41,11 @@ const ChatBot = () => {
     setIsLoading(true);
     
     try {
+      // Get only the last few messages to prevent context length issues
+      const recentMessages = [...messages.slice(-3), userMessage];
+      
       // Send messages to Gemini API
-      const aiResponse = await generateGeminiResponse([...messages, userMessage]);
+      const aiResponse = await generateGeminiResponse(recentMessages);
       
       // Add AI response to chat
       setMessages(prev => [...prev, { role: "model", content: aiResponse }]);
@@ -102,6 +104,11 @@ const ChatBot = () => {
               />
             ))}
             <div ref={messagesEndRef} />
+            {isLoading && (
+              <div className="flex justify-center">
+                <div className="animate-pulse text-sm text-muted-foreground">AI is thinking...</div>
+              </div>
+            )}
           </div>
           
           {/* Input area */}
@@ -113,6 +120,7 @@ const ChatBot = () => {
                 onKeyDown={handleKeyPress}
                 placeholder="Ask about farming, soil health, plant diseases, etc..."
                 className="flex-1 min-h-[80px] resize-none"
+                disabled={isLoading}
               />
               <Button
                 onClick={handleSendMessage}
